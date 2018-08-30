@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -34,6 +35,8 @@ class KlantenController {
 	private static final String REDIRECT_URL_NA_TOEVOEGEN = "redirect:/klanten";
 	private static final String REDIRECT_URL_NA_VERWIJDEREN = "redirect:/klanten/{id}/verwijderd";
 	private static final String VERWIJDERD_VIEW = "klanten/verwijderd";
+	private static final String REDIRECT_URL_NA_LOCKING_EXCEPTION =
+			"redirect:klanten/wijzigen?optimisticlockingexception=true";
 
 	// View
 	@GetMapping
@@ -85,7 +88,11 @@ class KlantenController {
 		if(bindinResult.hasErrors()) {
 			return KLANT_WIJZIGEN_VIEW;
 		}
-		klantenService.update(klant);
-		return REDIRECT_URL_NA_TOEVOEGEN;
+		try {
+			klantenService.update(klant);
+			return REDIRECT_URL_NA_TOEVOEGEN;
+		}catch (ObjectOptimisticLockingFailureException ex) {
+			return REDIRECT_URL_NA_LOCKING_EXCEPTION;
+		}
 	}
 }

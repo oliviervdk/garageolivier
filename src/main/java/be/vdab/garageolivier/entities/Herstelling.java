@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -42,6 +43,8 @@ public class Herstelling implements Serializable {
 	@NotNull
 	@NumberFormat(style = Style.NUMBER)
 	private int aantalUren;
+	@Version
+	private long versie;
 
 	public Herstelling() {}
 	public Herstelling(LocalDate herstelDatum, Auto auto, Set<Technieker> techniekers, int aantalUren) {
@@ -87,4 +90,10 @@ public class Herstelling implements Serializable {
 		this.aantalUren = aantalUren;
 	}
 
+	public long getVersie() {
+		return versie;
+	}
+	public void setVersie(long versie) {
+		this.versie = versie;
+	}
 }

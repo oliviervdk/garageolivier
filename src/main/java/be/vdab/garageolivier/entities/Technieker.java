@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.Length;
@@ -36,6 +37,8 @@ public class Technieker implements Serializable{
 	@Valid
 	@Embedded
 	private Adres adres;
+	@Version
+	private long versie;
 	
 	public Technieker() {}
 	public Technieker(String voornaam, String familienaam, Adres adres) {
@@ -74,5 +77,12 @@ public class Technieker implements Serializable{
 	}
 	public String getNaam() {
 		return voornaam + " " + familienaam;
+	}
+	
+	public long getVersie() {
+		return versie;
+	}
+	public void setVersie(long versie) {
+		this.versie = versie;
 	}
 }

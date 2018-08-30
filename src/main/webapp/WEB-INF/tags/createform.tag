@@ -41,6 +41,7 @@
 		<form:errors path='adres.gemeente' delimiter=', '/>
 	</form:label>
 	<form:input path='adres.gemeente' required='required' maxlength='50'/>
+	<form:hidden path='versie'/>
 	
 	<input type='submit' value='${knopTekst}' id='submitknop'>
 

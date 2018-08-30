@@ -11,15 +11,19 @@
 </head>
 <body>
 	<header>
-			<h1>Garage Olivier </h1>
-			<v:menu/>
+		<h1>Garage Olivier</h1>
+		<v:menu />
 	</header>
 	<div class="content">
 		<h2>Klant ${klant.naam} wijzigen</h2>
+		<c:if test="${param.optimisticlockingexception}">
+			<span>Klant werd door andere gebruiker gewijzigd:</span>
+		</c:if>
 		<spring:url value="/klanten/{id}/wijzigen" var="url">
-			<spring:param name="id" value="${klant.id}"/>
+			<spring:param name="id" value="${klant.id}" />
 		</spring:url>
-		<v:createform url="${url}" modelAttribute="klant" knopTekst="Klant wijzigen"/>
+		<v:createform url="${url}" modelAttribute="klant"
+			knopTekst="Klant wijzigen" />
 	</div>
 </body>
 </html>

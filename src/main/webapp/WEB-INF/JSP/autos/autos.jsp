@@ -9,12 +9,37 @@
 </head>
 <body>
 	<header>
-			<h1>Garage Olivier </h1>
-			<v:menu/>
+		<h1>Garage Olivier</h1>
+		<v:menu />
 	</header>
 	<div class="content">
 		<h2>Auto's</h2>
-		<a href="<c:url value='/autos/toevoegen'/>">Auto toevoegen</a>
+		<table>
+			<thead>
+				<tr>
+					<th>Merk</th>
+					<th>Type</th>
+					<th>Bouwjaar</th>
+					<th>nummerplaat</th>
+					<th>Klant</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items='${autos}' var='auto'>
+					<tr>
+						<td>${auto.merk}</td>
+						<td>${auto.type}</td>
+						<td>${auto.bouwjaar}</td>
+						<td>${auto.nummerplaat}</td>
+						<td>${auto.klant.naam}</td>
+					</tr>
+				</c:forEach>
+				<tr>
+					<td><a href="<c:url value='/autos/toevoegen'/>">Auto
+							toevoegen</a></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>

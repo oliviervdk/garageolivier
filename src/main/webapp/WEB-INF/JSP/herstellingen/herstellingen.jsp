@@ -14,7 +14,37 @@
 	</header>
 	<div class="content">
 		<h2>Herstellingen</h2>
-		<a href="<c:url value='/herstellingen/toevoegen'/>">Herstelling toevoegen</a>
+		<table>
+			<thead>
+				<tr>
+					<th>Hersteldatum</th>
+					<th>Auto</th>
+					<th>Techniekers</th>
+					<th>Aantal uren</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items='${herstellingen}' var='herstelling'>
+					<tr>
+						<td>${herstelling.herstelDatum}</td>
+						<td>
+							${herstelling.auto.merk} ${herstelling.auto.type}<br/>
+							${herstelling.auto.nummerplaat}
+						</td>
+						<td>
+							<c:forEach items='${herstelling.techniekers}' var='technieker'>
+								${technieker.naam}
+							</c:forEach>
+						</td>
+						<td>${herstelling.aantalUren}</td>
+					</tr>
+				</c:forEach>
+				<tr>
+					<td><a href="<c:url value='/herstellingen/toevoegen'/>">herstelling
+							toevoegen</a></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>

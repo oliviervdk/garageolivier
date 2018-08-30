@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -38,6 +39,8 @@ public class Auto implements Serializable{
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "klanten_klantid")
 	private Klant klant;
+	@Version
+	private long versie;
 	
 	
 	public Auto() {}
@@ -91,5 +94,11 @@ public class Auto implements Serializable{
 
 	public void setKlant(Klant klant) {
 		this.klant = klant;
+	}
+	public long getVersie() {
+		return versie;
+	}
+	public void setVersie(long versie) {
+		this.versie = versie;
 	}
 }
