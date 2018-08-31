@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import be.vdab.garageolivier.entities.Auto;
 import be.vdab.garageolivier.entities.Klant;
 import be.vdab.garageolivier.repositories.KlantenRepository;
 
@@ -15,7 +16,7 @@ import be.vdab.garageolivier.repositories.KlantenRepository;
 class KlantenServiceImpl implements KlantenService {
 	private final KlantenRepository klantenRepository;
 
-	KlantenServiceImpl(KlantenRepository klantenRepository) {
+	KlantenServiceImpl(KlantenRepository klantenRepository, Auto auto) {
 		this.klantenRepository = klantenRepository;
 	}
 

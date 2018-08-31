@@ -12,12 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
@@ -28,11 +29,11 @@ public class Herstelling implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long herstellingid;
+	private long herstellingId;
 	@NotNull
-	@DateTimeFormat(style = "s-")
+
 	private LocalDate herstelDatum;
-	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "autos_autoid")
 	private Auto auto;
 	@ManyToMany
@@ -55,9 +56,10 @@ public class Herstelling implements Serializable {
 	}
 	public Herstelling(long herstellingid, LocalDate herstelDatum, Auto auto, Set<Technieker> techniekers, int aantalUren) {
 		this(herstelDatum, auto, techniekers, aantalUren);
-		this.herstellingid = herstellingid;
+		this.herstellingId = herstellingid;
 	}
 
+	@DateTimeFormat(style = "S-")
 	public LocalDate getHerstelDatum() {
 		return herstelDatum;
 	}
@@ -96,4 +98,17 @@ public class Herstelling implements Serializable {
 	public void setVersie(long versie) {
 		this.versie = versie;
 	}
+	
+	@DateTimeFormat(iso=ISO.DATE)
+	public LocalDate getHerstelDatumForm() {
+		return herstelDatum;
+	}
+	
+	public void setHerstelDatumForm(LocalDate herstelDatumForm) {
+		this.herstelDatum=herstelDatumForm;
+	}
+	
+	
+	
+	
 }

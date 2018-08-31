@@ -9,9 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
@@ -21,7 +23,7 @@ public class Auto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long autoid;
+	private long autoId;
 	@SafeHtml
 	@NotBlank
 	@Length(min = 1, max = 50)
@@ -31,6 +33,7 @@ public class Auto implements Serializable{
 	@Length(min = 1, max = 50)
 	private String type;
 	@NotNull
+	@Min(1900)
 	private int bouwjaar;
 	@SafeHtml
 	@NotBlank
@@ -53,9 +56,15 @@ public class Auto implements Serializable{
 	}
 	public Auto(long autoid, String merk, String type, int bouwjaar, String nummerplaat, Klant klant) {
 		this(merk, type, bouwjaar, nummerplaat, klant);
-		this.autoid = autoid;
+		this.autoId = autoid;
 	}
-
+	
+	public long getAutoId() {
+		return autoId;
+	}
+	public void setAutoId(long autoId) {
+		this.autoId = autoId;
+	}
 	public String getMerk() {
 		return merk;
 	}
@@ -100,5 +109,8 @@ public class Auto implements Serializable{
 	}
 	public void setVersie(long versie) {
 		this.versie = versie;
+	}
+	public String getNaam() {
+		return nummerplaat + ", " + merk  + ", " + type;
 	}
 }

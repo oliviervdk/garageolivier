@@ -27,13 +27,10 @@
 				<c:forEach items='${herstellingen}' var='herstelling'>
 					<tr>
 						<td>${herstelling.herstelDatum}</td>
+						<td>${herstelling.auto.naam}</td>
 						<td>
-							${herstelling.auto.merk} ${herstelling.auto.type}<br/>
-							${herstelling.auto.nummerplaat}
-						</td>
-						<td>
-							<c:forEach items='${herstelling.techniekers}' var='technieker'>
-								${technieker.naam}
+							<c:forEach items='${herstelling.techniekers}' var='technieker' varStatus="status">
+								${technieker.naam}<c:if test="${not status.last}">, </c:if>
 							</c:forEach>
 						</td>
 						<td>${herstelling.aantalUren}</td>

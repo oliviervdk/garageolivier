@@ -44,7 +44,7 @@
 					</tr>
 				</c:forEach>
 				<tr>
-					<td><a href="<c:url value='/klanten/toevoegen'/>">Technieker
+					<td><a href="<c:url value='/techniekers/toevoegen'/>">Technieker
 							toevoegen</a></td>
 				</tr>
 			</tbody>
