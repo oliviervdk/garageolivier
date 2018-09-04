@@ -53,6 +53,27 @@ img{
 	height: auto;
 }
 
+tbody tr:hover{
+	background-color: silver;
+	color: teal;
+}
+
+tr a{
+	color: inherit;
+}
+
+.searchbar{
+	display: inline-block;
+}
+
+.fa-edit:hover, .fa-wrench:hover, .fa-car:hover{
+	color: gold;
+}
+
+.fa-bomb:hover{
+	color: black;
+}
+
 .submitlink {
 	margin: 0;
 	background: none;

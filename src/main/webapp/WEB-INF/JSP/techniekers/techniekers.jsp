@@ -18,29 +18,23 @@
 		<table>
 			<thead>
 				<tr>
-					<th>Technieker</th>
-					<th>Adres</th>
-					<th>Gemeente</th>
+					<th><c:url value="" var="url">
+							<c:param name="sort" value="familienaam" />
+						</c:url> <a href="${url}">Technieker</a></th>
+					<th><c:url value="" var="url">
+							<c:param name="sort" value="adres.straat" />
+						</c:url> <a href="${url}">Adres</a></th>
+					<th><c:url value="" var="url">
+							<c:param name="sort" value="adres.postcode" />
+						</c:url> <a href="${url}">Gemeente</a></th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items='${techniekers}' var='technieker'>
+				<c:forEach items='${page.content}' var='technieker'>
 					<tr>
 						<td>${technieker.naam}</td>
 						<td>${technieker.adres.straat} ${technieker.adres.huisNr}</td>
 						<td>${technieker.adres.postcode} ${technieker.adres.gemeente}</td>
-						<spring:url var='wijzigUrl' value='/techniekers/{id}'>
-							<spring:param name='id' value='${technieker}' />
-						</spring:url>
-						<td><a href="${wijzigUrl}">Wijzigen</a></td>
-						<spring:url value='/techniekers/{technieker}/verwijderen' var='verwijderURL'>
-							<spring:param name='id' value='${technieker}' />
-						</spring:url>
-						<td>
-							<form action='${verwijderURL}' method='post'>
-								<input class="submitlink" type='submit' value='Verwijderen'>
-							</form>
-						</td>
 					</tr>
 				</c:forEach>
 				<tr>

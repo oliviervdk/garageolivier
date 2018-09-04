@@ -2,7 +2,7 @@ package be.vdab.garageolivier.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -24,6 +26,8 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 @Entity
 @Table(name = "herstellingen")
+@NamedEntityGraph(name = "Herstelling.metTechnieker",
+	attributeNodes = @NamedAttributeNode("techniekers"))
 public class Herstelling implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,35 +35,36 @@ public class Herstelling implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long herstellingId;
 	@NotNull
-
 	private LocalDate herstelDatum;
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "autos_autoid")
 	private Auto auto;
 	@ManyToMany
-	@JoinTable(name = "techniekers_herstellingen",
-		joinColumns = @JoinColumn(name = "herstellingen_herstellingid"),
-		inverseJoinColumns = @JoinColumn(name = "techniekers_techniekerid"))
-	private Set<Technieker> techniekers;
+	@JoinTable(name = "techniekers_herstellingen", joinColumns = @JoinColumn(name = "herstellingen_herstellingid"), inverseJoinColumns = @JoinColumn(name = "techniekers_techniekerid"))
+	private List<Technieker> techniekers;
 	@NotNull
 	@NumberFormat(style = Style.NUMBER)
 	private int aantalUren;
 	@Version
 	private long versie;
 
-	public Herstelling() {}
-	public Herstelling(LocalDate herstelDatum, Auto auto, Set<Technieker> techniekers, int aantalUren) {
+	public Herstelling() {
+	}
+
+	public Herstelling(LocalDate herstelDatum, Auto auto, List<Technieker> techniekers, int aantalUren) {
 		this.herstelDatum = herstelDatum;
 		this.auto = auto;
 		this.techniekers = techniekers;
 		this.aantalUren = aantalUren;
 	}
-	public Herstelling(long herstellingid, LocalDate herstelDatum, Auto auto, Set<Technieker> techniekers, int aantalUren) {
+
+	public Herstelling(long herstellingid, LocalDate herstelDatum, Auto auto, List<Technieker> techniekers,
+			int aantalUren) {
 		this(herstelDatum, auto, techniekers, aantalUren);
 		this.herstellingId = herstellingid;
 	}
 
-	@DateTimeFormat(style = "S-")
+	@DateTimeFormat(style = "L-")
 	public LocalDate getHerstelDatum() {
 		return herstelDatum;
 	}
@@ -76,11 +81,11 @@ public class Herstelling implements Serializable {
 		this.auto = auto;
 	}
 
-	public Set<Technieker> getTechniekers() {
+	public List<Technieker> getTechniekers() {
 		return techniekers;
 	}
 
-	public void setTechniekers(Set<Technieker> techniekers) {
+	public void setTechniekers(List<Technieker> techniekers) {
 		this.techniekers = techniekers;
 	}
 
@@ -95,20 +100,18 @@ public class Herstelling implements Serializable {
 	public long getVersie() {
 		return versie;
 	}
+
 	public void setVersie(long versie) {
 		this.versie = versie;
 	}
-	
-	@DateTimeFormat(iso=ISO.DATE)
+
+	@DateTimeFormat(iso = ISO.DATE)
 	public LocalDate getHerstelDatumForm() {
 		return herstelDatum;
 	}
-	
+
 	public void setHerstelDatumForm(LocalDate herstelDatumForm) {
-		this.herstelDatum=herstelDatumForm;
+		this.herstelDatum = herstelDatumForm;
 	}
-	
-	
-	
-	
+
 }

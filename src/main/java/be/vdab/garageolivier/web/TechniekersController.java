@@ -2,6 +2,7 @@ package be.vdab.garageolivier.web;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -26,12 +27,12 @@ class TechniekersController {
 	
 	private static final String VIEW = "techniekers/techniekers";
 	private static final String TECHNIEKER_TOEVOEGEN_VIEW = "techniekers/toevoegen";
-	private static final String REDIRECT_URL_NA_TOEVOEGEN = "redirect:/techniekers";
+	private static final String REDIRECT_URL_NA_TOEVOEGEN = "redirect:/techniekers?sort=familienaam";
 	
 	//View
 	@GetMapping
-	ModelAndView findAll() {
-		return new ModelAndView(VIEW, "techniekers", techniekersService.findAll());
+	ModelAndView findAll(Pageable pageable) {
+		return new ModelAndView(VIEW, "page", techniekersService.findAll(pageable));
 	}
 	
 	//Toevoegen

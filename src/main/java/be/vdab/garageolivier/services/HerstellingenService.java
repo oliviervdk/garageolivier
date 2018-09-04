@@ -1,12 +1,13 @@
 package be.vdab.garageolivier.services;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import be.vdab.garageolivier.entities.Auto;
 import be.vdab.garageolivier.entities.Herstelling;
 
 public interface HerstellingenService {
-	List<Herstelling> findByAuto(Auto auto);
+	public Page<Herstelling> findByAuto(Auto auto, Pageable pageable);
 	public void create(Herstelling herstelling);
-	public List<Herstelling> findAll();
+	public Page<Herstelling> findAll(Pageable pageable);
 }

@@ -4,9 +4,11 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -32,7 +34,7 @@ class KlantenController {
 	private static final String KLANTEN_VIEW = "klanten/klanten";
 	private static final String KLANT_TOEVOEGEN_VIEW = "klanten/toevoegen";
 	private static final String KLANT_WIJZIGEN_VIEW = "klanten/wijzigen";
-	private static final String REDIRECT_URL_NA_TOEVOEGEN = "redirect:/klanten";
+	private static final String REDIRECT_URL_NA_TOEVOEGEN = "redirect:/klanten?sort=familienaam";
 	private static final String REDIRECT_URL_NA_VERWIJDEREN = "redirect:/klanten/{id}/verwijderd";
 	private static final String VERWIJDERD_VIEW = "klanten/verwijderd";
 	private static final String REDIRECT_URL_NA_LOCKING_EXCEPTION =
@@ -40,8 +42,17 @@ class KlantenController {
 
 	// View
 	@GetMapping
-	ModelAndView findAll() {
-		return new ModelAndView(KLANTEN_VIEW, "klanten", klantenService.findAll());
+	ModelAndView findAll(Pageable pageable) {
+		return new ModelAndView(KLANTEN_VIEW, "page", klantenService.findAll(pageable))
+				.addObject(new KlantNaamForm());
+	}
+	//Zoeken op naam
+	@GetMapping(params = "naam")
+	ModelAndView ZoekOpNaam(@Validated KlantNaamForm klantNaamForm, Pageable pageable, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			return new ModelAndView(KLANTEN_VIEW);
+		}
+		return new ModelAndView(KLANTEN_VIEW, "page", klantenService.findByNaamContaining(klantNaamForm.getNaam(), pageable));
 	}
 
 	// Toevoegen
@@ -95,4 +106,5 @@ class KlantenController {
 			return REDIRECT_URL_NA_LOCKING_EXCEPTION;
 		}
 	}
+	
 }

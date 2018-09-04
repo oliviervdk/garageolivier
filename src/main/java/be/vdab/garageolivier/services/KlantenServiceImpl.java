@@ -3,11 +3,13 @@ package be.vdab.garageolivier.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import be.vdab.garageolivier.entities.Auto;
 import be.vdab.garageolivier.entities.Klant;
 import be.vdab.garageolivier.repositories.KlantenRepository;
 
@@ -16,7 +18,7 @@ import be.vdab.garageolivier.repositories.KlantenRepository;
 class KlantenServiceImpl implements KlantenService {
 	private final KlantenRepository klantenRepository;
 
-	KlantenServiceImpl(KlantenRepository klantenRepository, Auto auto) {
+	KlantenServiceImpl(KlantenRepository klantenRepository) {
 		this.klantenRepository = klantenRepository;
 	}
 
@@ -33,7 +35,7 @@ class KlantenServiceImpl implements KlantenService {
 	}
 
 	public List<Klant> findAll() {
-		return klantenRepository.findAll();
+		return klantenRepository.findAll(new Sort("familienaam"));
 	}
 
 	public Optional<Klant> read(long id) {
@@ -41,7 +43,12 @@ class KlantenServiceImpl implements KlantenService {
 	}
 
 	@Override
-	public List<Klant> findByFamilienaamContaining(String naam) {
-		return klantenRepository.findByfamilienaamContaining(naam);
+	public Page<Klant> findAll(Pageable pageable) {
+		return klantenRepository.findAll(pageable);
+	}
+
+	@Override
+	public Page<Klant> findByNaamContaining(String naam, Pageable pageable) {
+		return klantenRepository.findByFamilienaamContaining(naam, pageable);
 	}
 }

@@ -1,7 +1,7 @@
 package be.vdab.garageolivier.services;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +20,8 @@ class HerstellingenServiceImpl implements HerstellingenService {
 	}
 
 	@Override
-	public List<Herstelling> findByAuto(Auto auto) {
-		return herstellingenrepository.findByAuto(auto);
+	public Page<Herstelling> findByAuto(Auto auto, Pageable pageable) {
+		return herstellingenrepository.findByAuto(auto, pageable);
 	}
 
 	@Override
@@ -30,8 +30,8 @@ class HerstellingenServiceImpl implements HerstellingenService {
 	}
 
 	@Override
-	public List<Herstelling> findAll() {
-		return herstellingenrepository.findAll();
+	public Page<Herstelling> findAll(Pageable pageable) {
+		return herstellingenrepository.findAll(pageable);
 	}
 
 }
