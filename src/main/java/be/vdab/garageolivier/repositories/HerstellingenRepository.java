@@ -16,4 +16,7 @@ public interface HerstellingenRepository extends JpaRepository<Herstelling, Long
 	
 	@EntityGraph("Herstelling.metTechnieker")
 	Page<Herstelling> findByAuto(Auto auto, Pageable pageable);
+
+	void deleteByAuto(Auto auto);
+
 }

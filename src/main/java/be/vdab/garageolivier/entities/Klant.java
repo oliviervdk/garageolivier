@@ -51,11 +51,11 @@ public class Klant implements Serializable {
 		this.klantId = klantId;
 	}
 
-	public long getId() {
+	public long getKlantId() {
 		return klantId;
 	}
 	
-	public void setId(long klantId) {
+	public void setKlantId(long klantId) {
 		this.klantId = klantId;
 	}
 	

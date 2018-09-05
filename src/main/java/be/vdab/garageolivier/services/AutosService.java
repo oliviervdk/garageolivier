@@ -15,4 +15,5 @@ public interface AutosService {
 	public List<Auto> findAll();
 	public Page<Auto> findByNummerplaatContains(String nummerplaat, Pageable pageable);
 	public Page<Auto> findAll(Pageable pageable);
+
 }

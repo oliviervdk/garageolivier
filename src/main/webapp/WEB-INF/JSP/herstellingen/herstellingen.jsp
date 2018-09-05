@@ -50,7 +50,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<p class='pagineren'>
+		<nav>
 			<c:forEach var="pageNr" begin="1" end="${page.totalPages}">
 				<c:choose>
 					<c:when test="${pageNr-1 == page.number}">       ${pageNr}     </c:when>
@@ -63,7 +63,7 @@
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
-		</p>
+		</nav>
 	</div>
 </body>
 </html>

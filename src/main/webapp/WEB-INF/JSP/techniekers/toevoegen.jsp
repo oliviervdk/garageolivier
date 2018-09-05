@@ -15,7 +15,7 @@
 	<div class="content">
 		<h2>Technieker toevoegen</h2>
 		<c:url value="/techniekers" var="url"/>
-		<v:createform url="${url}" modelAttribute="technieker" knopTekst="technieker toevoegen"/>
+		<v:createform url="${url}" modelAttribute="technieker" knopTekst="Technieker toevoegen"/>
 	</div>
 </body>
 </html>

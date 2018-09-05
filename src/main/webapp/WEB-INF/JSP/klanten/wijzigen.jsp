@@ -19,10 +19,10 @@
 		<c:if test="${param.optimisticlockingexception}">
 			<span>Klant werd door andere gebruiker gewijzigd:</span>
 		</c:if>
-		<spring:url value="/klanten/{id}/wijzigen" var="url">
-			<spring:param name="id" value="${klant.id}" />
+		<spring:url value="/klanten/{id}/wijzigen" var="wijzigUrl">
+			<spring:param name="id" value="${klant.klantId}" />
 		</spring:url>
-		<v:createform url="${url}" modelAttribute="klant"
+		<v:createform url="${wijzigUrl}" modelAttribute="klant"
 			knopTekst="Klant wijzigen" />
 	</div>
 </body>

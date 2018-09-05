@@ -22,7 +22,8 @@
 				Zoek op nummerplaat:
 				<form:errors path="nummerplaat" />
 			</form:label>
-			<form:input class="searchbar" path="nummerplaat" autofocus="autofocus" />
+			<form:input class="searchbar" path="nummerplaat"
+				autofocus="autofocus" />
 			<button type="submit">
 				<i class="fa fa-search"></i>
 			</button>
@@ -58,9 +59,8 @@
 						<spring:url var='herstelingeenUrl' value='/herstellingen/{id}'>
 							<spring:param name='id' value='${auto.autoId}' />
 						</spring:url>
-						<td>
-							<a href="${herstelingeenUrl}"><i class="fa fa-wrench" title="Herstellingen tonen"></i></a>
-						</td>
+						<td><a href="${herstelingeenUrl}"><i class="fa fa-wrench"
+								title="Herstellingen tonen"></i></a></td>
 					</tr>
 				</c:forEach>
 				<tr>
@@ -69,6 +69,20 @@
 				</tr>
 			</tbody>
 		</table>
+		<nav>
+			<c:forEach var="pageNr" begin="1" end="${page.totalPages}">
+				<c:choose>
+					<c:when test="${pageNr-1 == page.number}">       ${pageNr}     </c:when>
+					<c:otherwise>
+						<c:url value="" var="url">
+							<c:param name="page" value="${pageNr-1}" />
+							<c:param name="sort" value="${param.sort}" />
+						</c:url>
+						<a href="${url}">${pageNr}</a>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+		</nav>
 	</div>
 </body>
 </html>

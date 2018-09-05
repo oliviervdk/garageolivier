@@ -1,7 +1,5 @@
 package be.vdab.garageolivier.web;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Pageable;
@@ -19,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import be.vdab.garageolivier.entities.Klant;
+import be.vdab.garageolivier.services.AutosService;
+import be.vdab.garageolivier.services.HerstellingenService;
 import be.vdab.garageolivier.services.KlantenService;
 
 @Controller
@@ -27,15 +27,15 @@ class KlantenController {
 
 	private final KlantenService klantenService;
 
-	KlantenController(KlantenService klantenService) {
+	KlantenController(KlantenService klantenService, AutosService autosService, HerstellingenService herstellingenService) {
 		this.klantenService = klantenService;
 	}
 
 	private static final String KLANTEN_VIEW = "klanten/klanten";
 	private static final String KLANT_TOEVOEGEN_VIEW = "klanten/toevoegen";
 	private static final String KLANT_WIJZIGEN_VIEW = "klanten/wijzigen";
-	private static final String REDIRECT_URL_NA_TOEVOEGEN = "redirect:/klanten?sort=familienaam";
-	private static final String REDIRECT_URL_NA_VERWIJDEREN = "redirect:/klanten/{id}/verwijderd";
+	private static final String REDIRECT_NAAR_KLANTEN = "redirect:/klanten?sort=familienaam";
+	//private static final String REDIRECT_URL_NA_VERWIJDEREN = "redirect:/klanten/{id}/verwijderd";
 	private static final String VERWIJDERD_VIEW = "klanten/verwijderd";
 	private static final String REDIRECT_URL_NA_LOCKING_EXCEPTION =
 			"redirect:klanten/wijzigen?optimisticlockingexception=true";
@@ -67,7 +67,7 @@ class KlantenController {
 			return KLANT_TOEVOEGEN_VIEW;
 		}
 		klantenService.create(klant);
-		return REDIRECT_URL_NA_TOEVOEGEN;
+		return REDIRECT_NAAR_KLANTEN;
 	}
 	@InitBinder("klant")
 	void initBinderKlant(WebDataBinder binder) {
@@ -75,33 +75,31 @@ class KlantenController {
 	}
 
 	// verwijderen
-	@PostMapping("{id}/verwijderen")
-	String delete(@PathVariable long id, RedirectAttributes redirectAttributes) {
-		Klant klant = klantenService.read(id).get();
-		klantenService.delete(klant);
-		redirectAttributes.addAttribute("naam", klant.getNaam()); 
-		return REDIRECT_URL_NA_VERWIJDEREN; 
+	@GetMapping("{klant}/verwijderen")
+	ModelAndView deleted(@PathVariable Klant klant) {
+		return new ModelAndView(VERWIJDERD_VIEW)
+			 .addObject("klant", klant);
 	}
-	@GetMapping("{id}/verwijderd")
-	String deleted() {
-	 return VERWIJDERD_VIEW;
+	@PostMapping("{klant}/verwijderd")
+	String delete(@PathVariable Klant klant, RedirectAttributes redirectAttributes) {
+		klantenService.delete(klant); 
+		return REDIRECT_NAAR_KLANTEN; 
 	}
 
 	// Wijzigen
-	@GetMapping("{id}")
-	ModelAndView wijzigForm(@PathVariable long id) {
-		Optional<Klant> optionalKlant = klantenService.read(id);
+	@GetMapping("{klant}/wijzigen")
+	ModelAndView wijzigForm(@PathVariable Klant klant) {
 		return new ModelAndView(KLANT_WIJZIGEN_VIEW)
-				.addObject(optionalKlant.get());
+				.addObject(klant);
 	}
-	@PostMapping("{id}/wijzigen")
+	@PostMapping("{klant}/wijzigen")
 	String update(@Valid Klant klant, BindingResult bindinResult) {
 		if(bindinResult.hasErrors()) {
 			return KLANT_WIJZIGEN_VIEW;
 		}
 		try {
 			klantenService.update(klant);
-			return REDIRECT_URL_NA_TOEVOEGEN;
+			return REDIRECT_NAAR_KLANTEN;
 		}catch (ObjectOptimisticLockingFailureException ex) {
 			return REDIRECT_URL_NA_LOCKING_EXCEPTION;
 		}

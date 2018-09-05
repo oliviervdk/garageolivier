@@ -16,17 +16,20 @@
 	</header>
 	<div class="content">
 		<h2>Klanten</h2>
-		<form:form method="get" action="/klanten" modelAttribute="klantNaamForm">
+		<form:form method="get" action="/klanten"
+			modelAttribute="klantNaamForm">
 			<form:label path="naam">
 				Zoek op naam:
-				<form:errors path="naam"/>
+				<form:errors path="naam" />
 			</form:label>
-			<form:input class="searchbar" path="naam" autofocus="autofocus"/>
-			<button type="submit"><i class="fa fa-search"></i></button>
+			<form:input class="searchbar" path="naam" autofocus="autofocus" />
+			<button type="submit">
+				<i class="fa fa-search"></i>
+			</button>
 		</form:form>
 		<table>
 			<thead>
-			<tr>
+				<tr>
 					<th><c:url value="" var="url">
 							<c:param name="sort" value="familienaam" />
 						</c:url> <a href="${url}">Klant</a></th>
@@ -42,36 +45,46 @@
 				<c:forEach items='${page.content}' var='klant'>
 					<tr>
 						<td>${klant.naam}</td>
-						<td>${klant.adres.straat} ${klant.adres.huisNr}</td>
-						<td>${klant.adres.postcode} ${klant.adres.gemeente}</td>
-						<spring:url var='wijzigUrl' value='/klanten/{id}'>
-							<spring:param name='id' value='${klant.id}' />
+						<td>${klant.adres.straat}&nbsp;${klant.adres.huisNr}</td>
+						<td>${klant.adres.postcode}&nbsp;${klant.adres.gemeente}</td>
+						<spring:url var='wijzigUrl' value='/klanten/{id}/wijzigen'>
+							<spring:param name='id' value='${klant.klantId}' />
 						</spring:url>
-						<td>
-							<a href="${wijzigUrl}"><i class="fa fa-edit" title="Klant wijzigen"></i></a>
-						</td>
+						<td><a href="${wijzigUrl}"><i class="fa fa-edit"
+								title="Klant wijzigen"></i></a></td>
 						<spring:url value='/klanten/{id}/verwijderen' var='verwijderURL'>
-							<spring:param name='id' value='${klant.id}' />
+							<spring:param name='id' value='${klant.klantId}' />
 						</spring:url>
-						<td>
-							<form action='${verwijderURL}' method='post'>
-								<button class="submitlink" type="submit"><i class="fa fa-bomb" title="Klant verwijderen"></i></button>
-							</form>
-						</td>
+						<td><a href="${verwijderURL}"><i class="fa fa-bomb"
+								title="Klant verwijderen"></i></a></td>
 						<spring:url var='autosUrl' value='/autos/{id}'>
-							<spring:param name='id' value='${klant.id}' />
+							<spring:param name='id' value='${klant.klantId}' />
 						</spring:url>
-						<td>
-							<a href="${autosUrl}"><i class="fa fa-car" title="Auto's tonen"></i></a>
-						</td>
+						<td><a href="${autosUrl}"><i class="fa fa-car"
+								title="Auto's tonen"></i></a></td>
+
 					</tr>
 				</c:forEach>
 				<tr>
-					<td><a href="<c:url value='/klanten/toevoegen'/>">Klant toevoegen</a></td>
+					<td><a href="<c:url value='/klanten/toevoegen'/>">Klant
+							toevoegen</a></td>
 				</tr>
 			</tbody>
 		</table>
-	
+		<nav>
+			<c:forEach var="pageNr" begin="1" end="${page.totalPages}">
+				<c:choose>
+					<c:when test="${pageNr-1 == page.number}">       ${pageNr}     </c:when>
+					<c:otherwise>
+						<c:url value="" var="url">
+							<c:param name="page" value="${pageNr-1}" />
+							<c:param name="sort" value="${param.sort}" />
+						</c:url>
+						<a href="${url}">${pageNr}</a>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+		</nav>
 	</div>
 </body>
 </html>

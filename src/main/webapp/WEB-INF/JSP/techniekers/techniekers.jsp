@@ -33,8 +33,8 @@
 				<c:forEach items='${page.content}' var='technieker'>
 					<tr>
 						<td>${technieker.naam}</td>
-						<td>${technieker.adres.straat} ${technieker.adres.huisNr}</td>
-						<td>${technieker.adres.postcode} ${technieker.adres.gemeente}</td>
+						<td>${technieker.adres.straat}&nbsp;${technieker.adres.huisNr}</td>
+						<td>${technieker.adres.postcode}&nbsp;${technieker.adres.gemeente}</td>
 					</tr>
 				</c:forEach>
 				<tr>
@@ -43,6 +43,20 @@
 				</tr>
 			</tbody>
 		</table>
+		<nav>
+			<c:forEach var="pageNr" begin="1" end="${page.totalPages}">
+				<c:choose>
+					<c:when test="${pageNr-1 == page.number}">       ${pageNr}     </c:when>
+					<c:otherwise>
+						<c:url value="" var="url">
+							<c:param name="page" value="${pageNr-1}" />
+							<c:param name="sort" value="${param.sort}" />
+						</c:url>
+						<a href="${url}">${pageNr}</a>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+		</nav>
 	</div>
 </body>
 </html>

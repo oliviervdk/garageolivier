@@ -48,4 +48,5 @@ class AutosServiceImpl implements AutosService {
 		return autosRepository.findAll(pageable);
 	}
 
+
 }
