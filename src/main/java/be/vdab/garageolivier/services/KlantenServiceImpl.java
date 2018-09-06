@@ -23,7 +23,8 @@ class KlantenServiceImpl implements KlantenService {
 	private final AutosRepository autosRepository;
 	private final HerstellingenRepository herstellingenRepository;
 
-	KlantenServiceImpl(KlantenRepository klantenRepository, AutosRepository autosRepository, HerstellingenRepository herstellingenRepository) {
+	KlantenServiceImpl(KlantenRepository klantenRepository, AutosRepository autosRepository,
+			HerstellingenRepository herstellingenRepository) {
 		this.klantenRepository = klantenRepository;
 		this.autosRepository = autosRepository;
 		this.herstellingenRepository = herstellingenRepository;
@@ -42,7 +43,7 @@ class KlantenServiceImpl implements KlantenService {
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
 	public void delete(Klant klant) {
 		List<Auto> klantAutos = autosRepository.findByKlant(klant);
-		for(Auto auto : klantAutos) {
+		for (Auto auto : klantAutos) {
 			herstellingenRepository.deleteByAuto(auto);
 			autosRepository.delete(auto);
 		}
@@ -64,6 +65,8 @@ class KlantenServiceImpl implements KlantenService {
 
 	@Override
 	public Page<Klant> findByNaamContaining(String naam, Pageable pageable) {
-		return klantenRepository.findByFamilienaamContaining(naam, pageable);
+		String naamVoorQuery = '%' + naam + '%';
+		return klantenRepository.findByNaamContaining(naamVoorQuery, pageable);
+
 	}
 }
