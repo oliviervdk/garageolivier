@@ -35,7 +35,7 @@ class AutosServiceImpl implements AutosService {
 
 	@Override
 	public List<Auto> findAll() {
-		return autosRepository.findAll(new Sort("nummerplaat"));
+		return autosRepository.findAll(new Sort(Sort.Direction.ASC , "nummerplaat"));
 	}
 
 	@Override

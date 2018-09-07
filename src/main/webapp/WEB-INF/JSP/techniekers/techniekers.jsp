@@ -15,34 +15,47 @@
 	</header>
 	<div class="content">
 		<h2>Techniekers</h2>
-		<table>
-			<thead>
-				<tr>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="familienaam" />
-						</c:url> <a href="${url}">Technieker</a></th>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="adres.straat" />
-						</c:url> <a href="${url}">Adres</a></th>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="adres.postcode" />
-						</c:url> <a href="${url}">Gemeente</a></th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items='${page.content}' var='technieker'>
+		<c:choose>
+			<c:when test="${not empty page}">
+				<table>
+					<thead>
+						<tr>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="familienaam" />
+								</c:url> <a href="${url}">Technieker</a></th>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="adres.straat" />
+								</c:url> <a href="${url}">Adres</a></th>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="adres.postcode" />
+								</c:url> <a href="${url}">Gemeente</a></th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items='${page.content}' var='technieker'>
+							<tr>
+								<td>${technieker.naam}</td>
+								<td>${technieker.adres.straat}&nbsp;${technieker.adres.huisNr}</td>
+								<td>${technieker.adres.postcode}&nbsp;${technieker.adres.gemeente}</td>
+							</tr>
+						</c:forEach>
+						<tr>
+							<td><a href="<c:url value='/techniekers/toevoegen'/>">Technieker
+									toevoegen</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</c:when>
+			<c:otherwise>
+				<p>Geen Herstellingen gevonden.</p>
+				<table>
 					<tr>
-						<td>${technieker.naam}</td>
-						<td>${technieker.adres.straat}&nbsp;${technieker.adres.huisNr}</td>
-						<td>${technieker.adres.postcode}&nbsp;${technieker.adres.gemeente}</td>
+						<td><a href="<c:url value='/techniekers/toevoegen'/>">herstelling
+								toevoegen</a></td>
 					</tr>
-				</c:forEach>
-				<tr>
-					<td><a href="<c:url value='/techniekers/toevoegen'/>">Technieker
-							toevoegen</a></td>
-				</tr>
-			</tbody>
-		</table>
+				</table>
+			</c:otherwise>
+		</c:choose>
 		<nav>
 			<c:forEach var="pageNr" begin="1" end="${page.totalPages}">
 				<c:choose>

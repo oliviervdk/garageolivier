@@ -27,50 +27,63 @@
 				<i class="fa fa-search"></i>
 			</button>
 		</form:form>
-		<table>
-			<thead>
-				<tr>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="familienaam" />
-						</c:url> <a href="${url}">Klant</a></th>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="adres.straat" />
-						</c:url> <a href="${url}">Adres</a></th>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="adres.postcode" />
-						</c:url> <a href="${url}">Gemeente</a></th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items='${page.content}' var='klant'>
-					<tr>
-						<td>${klant.naam}</td>
-						<td>${klant.adres.straat}&nbsp;${klant.adres.huisNr}</td>
-						<td>${klant.adres.postcode}&nbsp;${klant.adres.gemeente}</td>
-						<spring:url var='wijzigUrl' value='/klanten/{id}/wijzigen'>
-							<spring:param name='id' value='${klant.klantId}' />
-						</spring:url>
-						<td><a href="${wijzigUrl}"><i class="fa fa-edit"
-								title="Klant wijzigen"></i></a></td>
-						<spring:url value='/klanten/{id}/verwijderen' var='verwijderURL'>
-							<spring:param name='id' value='${klant.klantId}' />
-						</spring:url>
-						<td><a href="${verwijderURL}"><i class="fa fa-bomb"
-								title="Klant verwijderen"></i></a></td>
-						<spring:url var='autosUrl' value='/autos/{id}'>
-							<spring:param name='id' value='${klant.klantId}' />
-						</spring:url>
-						<td><a href="${autosUrl}"><i class="fa fa-car"
-								title="Auto's tonen"></i></a></td>
+		<c:choose>
+			<c:when test="${not empty page}">
+				<table>
+					<thead>
+						<tr>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="familienaam" />
+								</c:url> <a href="${url}">Klant</a></th>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="adres.straat" />
+								</c:url> <a href="${url}">Adres</a></th>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="adres.postcode" />
+								</c:url> <a href="${url}">Gemeente</a></th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items='${page.content}' var='klant'>
+							<tr>
+								<td>${klant.naam}</td>
+								<td>${klant.adres.straat}&nbsp;${klant.adres.huisNr}</td>
+								<td>${klant.adres.postcode}&nbsp;${klant.adres.gemeente}</td>
+								<spring:url var='wijzigUrl' value='/klanten/{id}/wijzigen'>
+									<spring:param name='id' value='${klant.klantId}' />
+								</spring:url>
+								<td><a href="${wijzigUrl}"><i class="fa fa-edit"
+										title="Klant wijzigen"></i></a></td>
+								<spring:url value='/klanten/{id}/verwijderen' var='verwijderURL'>
+									<spring:param name='id' value='${klant.klantId}' />
+								</spring:url>
+								<td><a href="${verwijderURL}"><i class="fa fa-bomb"
+										title="Klant verwijderen"></i></a></td>
+								<spring:url var='autosUrl' value='/autos/{id}'>
+									<spring:param name='id' value='${klant.klantId}' />
+								</spring:url>
+								<td><a href="${autosUrl}"><i class="fa fa-car"
+										title="Auto's tonen"></i></a></td>
 
+							</tr>
+						</c:forEach>
+						<tr>
+							<td><a href="<c:url value='/klanten/toevoegen'/>">Klant
+									toevoegen</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</c:when>
+			<c:otherwise>
+				<p>Geen Herstellingen gevonden.</p>
+				<table>
+					<tr>
+						<td><a href="<c:url value='/klanten/toevoegen'/>">herstelling
+								toevoegen</a></td>
 					</tr>
-				</c:forEach>
-				<tr>
-					<td><a href="<c:url value='/klanten/toevoegen'/>">Klant
-							toevoegen</a></td>
-				</tr>
-			</tbody>
-		</table>
+				</table>
+			</c:otherwise>
+		</c:choose>
 		<nav>
 			<c:forEach var="pageNr" begin="1" end="${page.totalPages}">
 				<c:choose>

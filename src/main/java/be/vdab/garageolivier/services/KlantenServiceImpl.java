@@ -51,7 +51,7 @@ class KlantenServiceImpl implements KlantenService {
 	}
 
 	public List<Klant> findAll() {
-		return klantenRepository.findAll(new Sort("familienaam"));
+		return klantenRepository.findAll(new Sort(Sort.Direction.ASC , "familienaam"));
 	}
 
 	public Optional<Klant> read(long id) {

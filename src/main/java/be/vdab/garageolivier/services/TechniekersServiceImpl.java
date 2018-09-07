@@ -27,7 +27,7 @@ class TechniekersServiceImpl implements TechniekersService {
 	}
 	@Override
 	public List<Technieker> findAll() {
-		return techniekersRepository.findAll(new Sort("familienaam"));
+		return techniekersRepository.findAll(new Sort(Sort.Direction.ASC , "familienaam"));
 	}
 	@Override
 	public Page<Technieker> findAll(Pageable pageable) {

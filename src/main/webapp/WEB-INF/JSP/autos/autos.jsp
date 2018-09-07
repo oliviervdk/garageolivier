@@ -28,47 +28,60 @@
 				<i class="fa fa-search"></i>
 			</button>
 		</form:form>
-		<table>
-			<thead>
-				<tr>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="merk" />
-						</c:url> <a href="${url}">Merk</a></th>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="type" />
-						</c:url> <a href="${url}">Type</a></th>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="bouwjaar" />
-						</c:url> <a href="${url}">Bouwjaar</a></th>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="nummerplaat" />
-						</c:url> <a href="${url}">Nummerplaat</a></th>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="klant.familienaam" />
-						</c:url> <a href="${url}">Klant</a></th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items='${page.content}' var='auto'>
+		<c:choose>
+			<c:when test="${not empty page}">
+				<table>
+					<thead>
+						<tr>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="merk" />
+								</c:url> <a href="${url}">Merk</a></th>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="type" />
+								</c:url> <a href="${url}">Type</a></th>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="bouwjaar" />
+								</c:url> <a href="${url}">Bouwjaar</a></th>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="nummerplaat" />
+								</c:url> <a href="${url}">Nummerplaat</a></th>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="klant.familienaam" />
+								</c:url> <a href="${url}">Klant</a></th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items='${page.content}' var='auto'>
+							<tr>
+								<td>${auto.merk}</td>
+								<td>${auto.type}</td>
+								<td>${auto.bouwjaar}</td>
+								<td>${auto.nummerplaat}</td>
+								<td>${auto.klant.naam}</td>
+								<spring:url var='herstelingeenUrl' value='/herstellingen/{id}'>
+									<spring:param name='id' value='${auto.autoId}' />
+								</spring:url>
+								<td><a href="${herstelingeenUrl}"><i
+										class="fa fa-wrench" title="Herstellingen tonen"></i></a></td>
+							</tr>
+						</c:forEach>
+						<tr>
+							<td><a href="<c:url value='/autos/toevoegen'/>">Auto
+									toevoegen</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</c:when>
+			<c:otherwise>
+				<p>Geen Auto's gevonden.</p>
+				<table>
 					<tr>
-						<td>${auto.merk}</td>
-						<td>${auto.type}</td>
-						<td>${auto.bouwjaar}</td>
-						<td>${auto.nummerplaat}</td>
-						<td>${auto.klant.naam}</td>
-						<spring:url var='herstelingeenUrl' value='/herstellingen/{id}'>
-							<spring:param name='id' value='${auto.autoId}' />
-						</spring:url>
-						<td><a href="${herstelingeenUrl}"><i class="fa fa-wrench"
-								title="Herstellingen tonen"></i></a></td>
+						<td><a href="<c:url value='/autos/toevoegen'/>">herstelling
+								toevoegen</a></td>
 					</tr>
-				</c:forEach>
-				<tr>
-					<td><a href="<c:url value='/autos/toevoegen'/>">Auto
-							toevoegen</a></td>
-				</tr>
-			</tbody>
-		</table>
+				</table>
+			</c:otherwise>
+		</c:choose>
 		<nav>
 			<c:forEach var="pageNr" begin="1" end="${page.totalPages}">
 				<c:choose>

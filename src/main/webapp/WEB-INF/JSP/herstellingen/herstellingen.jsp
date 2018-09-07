@@ -15,41 +15,54 @@
 	</header>
 	<div class="content">
 		<h2>Herstellingen</h2>
-		<table>
-			<thead>
-				<tr>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="herstelDatum" />
-						</c:url> <a href="${url}">HerstelDatum</a></th>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="auto.nummerplaat" />
-						</c:url> <a href="${url}">Auto</a></th>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="techniekers.familienaam" />
-						</c:url> <a href="${url}">Techniekers</a></th>
-					<th><c:url value="" var="url">
-							<c:param name="sort" value="aantalUren" />
-						</c:url> <a href="${url}">Aantal uren</a></th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items='${page.content}' var='herstelling'>
+		<c:choose>
+			<c:when test="${not empty page.content}">
+				<table>
+					<thead>
+						<tr>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="herstelDatum" />
+								</c:url> <a href="${url}">HerstelDatum</a></th>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="auto.nummerplaat" />
+								</c:url> <a href="${url}">Auto</a></th>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="techniekers.familienaam" />
+								</c:url> <a href="${url}">Techniekers</a></th>
+							<th><c:url value="" var="url">
+									<c:param name="sort" value="aantalUren" />
+								</c:url> <a href="${url}">Aantal uren</a></th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items='${page.content}' var='herstelling'>
+							<tr>
+								<td><spring:eval expression="herstelling.herstelDatum" /></td>
+								<td>${herstelling.auto.naam}</td>
+								<td><c:forEach items='${herstelling.techniekers}'
+										var='technieker' varStatus="status">
+										${technieker.naam}<c:if test="${not status.last}">, </c:if>
+									</c:forEach></td>
+								<td>${herstelling.aantalUren}</td>
+							</tr>
+						</c:forEach>
+						<tr>
+							<td><a href="<c:url value='/herstellingen/toevoegen'/>">herstelling
+									toevoegen</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</c:when>
+			<c:otherwise>
+				<p>Geen Herstellingen gevonden.</p>
+				<table>
 					<tr>
-						<td><spring:eval expression="herstelling.herstelDatum" /></td>
-						<td>${herstelling.auto.naam}</td>
-						<td><c:forEach items='${herstelling.techniekers}'
-								var='technieker' varStatus="status">
-								${technieker.naam}<c:if test="${not status.last}">, </c:if>
-							</c:forEach></td>
-						<td>${herstelling.aantalUren}</td>
+						<td><a href="<c:url value='/herstellingen/toevoegen'/>">herstelling
+								toevoegen</a></td>
 					</tr>
-				</c:forEach>
-				<tr>
-					<td><a href="<c:url value='/herstellingen/toevoegen'/>">herstelling
-							toevoegen</a></td>
-				</tr>
-			</tbody>
-		</table>
+				</table>
+			</c:otherwise>
+		</c:choose>
 		<nav>
 			<c:forEach var="pageNr" begin="1" end="${page.totalPages}">
 				<c:choose>
