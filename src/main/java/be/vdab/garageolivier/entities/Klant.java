@@ -17,11 +17,10 @@ import org.hibernate.validator.constraints.SafeHtml;
 
 import be.vdab.garageolivier.valueobjects.Adres;
 
-
 @Entity
 @Table(name = "klanten")
 public class Klant implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,13 +38,16 @@ public class Klant implements Serializable {
 	private Adres adres;
 	@Version
 	private long versie;
-	
-	public Klant() {}
+
+	public Klant() {
+	}
+
 	public Klant(String voornaam, String familienaam, Adres adres) {
 		this.voornaam = voornaam;
 		this.familienaam = familienaam;
 		this.adres = adres;
 	}
+
 	public Klant(long klantId, String voornaam, String familienaam, Adres adres) {
 		this(voornaam, familienaam, adres);
 		this.klantId = klantId;
@@ -54,11 +56,11 @@ public class Klant implements Serializable {
 	public long getKlantId() {
 		return klantId;
 	}
-	
+
 	public void setKlantId(long klantId) {
 		this.klantId = klantId;
 	}
-	
+
 	public String getVoornaam() {
 		return voornaam;
 	}
@@ -82,15 +84,18 @@ public class Klant implements Serializable {
 	public void setAdres(Adres adres) {
 		this.adres = adres;
 	}
-	
+
 	public String getNaam() {
 		return voornaam + " " + familienaam;
 	}
-	
+
 	public long getVersie() {
 		return versie;
 	}
+
 	public void setVersie(long versie) {
 		this.versie = versie;
 	}
+
+
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,6 +32,7 @@ class AutosController {
 	private static final String VIEW = "autos/autos";
 	private static final String AUTO_TOEVOEGEN_VIEW = "autos/toevoegen";
 	private static final String REDIRECT_URL_NA_TOEVOEGEN = "redirect:/autos?sort=nummerplaat";
+	private static final String AUTO_WIJZIGEN_VIEW = "/autos/wijzigen";
 
 	// View
 	@GetMapping
@@ -62,7 +64,6 @@ class AutosController {
 		return new ModelAndView(AUTO_TOEVOEGEN_VIEW).addObject(new Auto()).addObject("klanten",
 				klantenService.findAll());
 	}
-
 	@PostMapping
 	String create(@Valid Auto auto, BindingResult bindingresult) {
 		if (bindingresult.hasErrors()) {
@@ -71,9 +72,20 @@ class AutosController {
 		autosService.create(auto);
 		return REDIRECT_URL_NA_TOEVOEGEN;
 	}
-
-	/*
-	 * @InitBinder("auto") void initBinderKlant(WebDataBinder binder) {
-	 * binder.initDirectFieldAccess(); }
-	 */
+	
+	//wijzigen
+	@GetMapping("/wijzigen/{auto}")
+	ModelAndView wijzigEigenaar(@PathVariable Auto auto) {
+		return new ModelAndView(AUTO_WIJZIGEN_VIEW)
+				.addObject("auto", auto)
+				.addObject("klanten", klantenService.findAll());
+	}
+	@PostMapping
+	String wijzigEigenaar(@Valid Auto auto, BindingResult bindingresult) {
+		if (bindingresult.hasErrors()) {
+			return AUTO_WIJZIGEN_VIEW;
+		}
+		autosService.update(auto);
+		return REDIRECT_URL_NA_TOEVOEGEN;
+	}
 }

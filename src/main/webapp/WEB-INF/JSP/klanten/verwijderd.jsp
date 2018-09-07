@@ -7,7 +7,7 @@
 <!doctype html>
 <html lang='nl'>
 <head>
-<v:head title="Klant ${klant.naam} verwijderd" />
+<v:head title="Klant ${klant.naam} verwijderen" />
 </head>
 <body>
 	<header>
@@ -15,17 +15,22 @@
 		<v:menu />
 	</header>
 	<div class="verwijder">
-		<h2>Weet u zeker dat u klant ${klant.naam} wil verwijderen?</h2>
-		Als u ${klant.naam} verwijderd, worden ook bijhorende auto's en
-		herstellingen verwijderd.
-		<spring:url value='/klanten/{id}/verwijderd' var='verwijderURL'>
-			<spring:param name='id' value='${klant.klantId}' />
-		</spring:url>
-		<form method="post" action="${verwijderURL}">
-			<h3>${klant.naam} verwijderen?</h3>
-			<button type="submit">Doorgaan</button>
-			<button formmethod="get" formaction="<c:url value='/klanten'/>">Annuleren</button>
-		</form>
+		<c:choose>
+			<c:when test="${not empty fouten}">
+				<h2>${klant.naam} heeft nog auto's in de database en kan niet gewist worden.</h2>	
+			</c:when>
+			<c:otherwise>
+				<h2>Bent u zeker dat u ${klant.naam} uit de database wil wissen?</h2>
+				<spring:url value='/klanten/{id}/verwijderd' var='verwijderURL'>
+					<spring:param name='id' value='${klant.klantId}' />
+				</spring:url>
+				<form method="post" action="${verwijderURL}">
+					<h3>${klant.naam} verwijderen?</h3>
+					<button type="submit">Doorgaan</button>
+					<button formmethod="get" formaction="<c:url value='/klanten'/>">Annuleren</button>
+				</form>
+			</c:otherwise>
+		</c:choose>
 	</div>
 </body>
 </html>

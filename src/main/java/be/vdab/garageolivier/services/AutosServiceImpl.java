@@ -48,5 +48,15 @@ class AutosServiceImpl implements AutosService {
 		return autosRepository.findAll(pageable);
 	}
 
+	@Override
+	public List<Auto> findByKlant(Klant klant) {
+		return autosRepository.findByKlant(klant);
+	}
+
+	@Override
+	public void update(Auto auto) {
+		autosRepository.save(auto);
+	}
+
 
 }

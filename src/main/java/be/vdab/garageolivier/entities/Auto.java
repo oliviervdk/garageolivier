@@ -51,7 +51,7 @@ public class Auto implements Serializable{
 		this.merk = merk;
 		this.type = type;
 		this.bouwjaar = bouwjaar;
-		this.nummerplaat = nummerplaat;
+		this.nummerplaat = nummerplaat.toUpperCase();
 		this.klant = klant;
 	}
 	public Auto(long autoid, String merk, String type, int bouwjaar, String nummerplaat, Klant klant) {
@@ -94,7 +94,7 @@ public class Auto implements Serializable{
 	}
 
 	public void setNummerplaat(String nummerplaat) {
-		this.nummerplaat = nummerplaat;
+		this.nummerplaat = nummerplaat.toUpperCase();
 	}
 
 	public Klant getKlant() {
@@ -104,6 +104,7 @@ public class Auto implements Serializable{
 	public void setKlant(Klant klant) {
 		this.klant = klant;
 	}
+	
 	public long getVersie() {
 		return versie;
 	}
@@ -112,5 +113,28 @@ public class Auto implements Serializable{
 	}
 	public String getNaam() {
 		return nummerplaat + ", " + merk  + ", " + type;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((nummerplaat == null) ? 0 : nummerplaat.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Auto other = (Auto) obj;
+		if (nummerplaat == null) {
+			if (other.nummerplaat != null)
+				return false;
+		} else if (!nummerplaat.equals(other.nummerplaat))
+			return false;
+		return true;
 	}
 }

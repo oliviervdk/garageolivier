@@ -18,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import be.vdab.garageolivier.entities.Klant;
 import be.vdab.garageolivier.services.AutosService;
-import be.vdab.garageolivier.services.HerstellingenService;
 import be.vdab.garageolivier.services.KlantenService;
 
 @Controller
@@ -26,16 +25,17 @@ import be.vdab.garageolivier.services.KlantenService;
 class KlantenController {
 
 	private final KlantenService klantenService;
+	private final AutosService autosService;
 
-	KlantenController(KlantenService klantenService, AutosService autosService, HerstellingenService herstellingenService) {
+	KlantenController(KlantenService klantenService, AutosService autosService) {
 		this.klantenService = klantenService;
+		this.autosService = autosService;
 	}
 
 	private static final String KLANTEN_VIEW = "klanten/klanten";
 	private static final String KLANT_TOEVOEGEN_VIEW = "klanten/toevoegen";
 	private static final String KLANT_WIJZIGEN_VIEW = "klanten/wijzigen";
 	private static final String REDIRECT_NAAR_KLANTEN = "redirect:/klanten?sort=familienaam";
-	//private static final String REDIRECT_URL_NA_VERWIJDEREN = "redirect:/klanten/{id}/verwijderd";
 	private static final String VERWIJDERD_VIEW = "klanten/verwijderd";
 	private static final String REDIRECT_URL_NA_LOCKING_EXCEPTION =
 			"redirect:klanten/wijzigen?optimisticlockingexception=true";
@@ -48,7 +48,7 @@ class KlantenController {
 	}
 	//Zoeken op naam
 	@GetMapping(params = "naam")
-	ModelAndView ZoekOpNaam(@Validated KlantNaamForm klantNaamForm, Pageable pageable, BindingResult bindingResult) {
+	ModelAndView zoekOpNaam(@Validated KlantNaamForm klantNaamForm, Pageable pageable, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) {
 			return new ModelAndView(KLANTEN_VIEW);
 		}
@@ -77,13 +77,18 @@ class KlantenController {
 	// verwijderen
 	@GetMapping("{klant}/verwijderen")
 	ModelAndView deleted(@PathVariable Klant klant) {
+		if(! autosService.findByKlant(klant).isEmpty() ) {
+			return new ModelAndView(VERWIJDERD_VIEW)
+					.addObject("klant", klant)
+					.addObject("fouten", "De klant heeft nog auto's in de database!");
+		}
 		return new ModelAndView(VERWIJDERD_VIEW)
 			 .addObject("klant", klant);
 	}
 	@PostMapping("{klant}/verwijderd")
 	String delete(@PathVariable Klant klant, RedirectAttributes redirectAttributes) {
 		klantenService.delete(klant); 
-		return REDIRECT_NAAR_KLANTEN; 
+		return REDIRECT_NAAR_KLANTEN;
 	}
 
 	// Wijzigen

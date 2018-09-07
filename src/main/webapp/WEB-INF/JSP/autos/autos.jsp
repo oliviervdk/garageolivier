@@ -58,11 +58,16 @@
 								<td>${auto.bouwjaar}</td>
 								<td>${auto.nummerplaat}</td>
 								<td>${auto.klant.naam}</td>
-								<spring:url var='herstelingeenUrl' value='/herstellingen/{id}'>
+								<spring:url var='herstellingenUrl' value='/herstellingen/{id}'>
 									<spring:param name='id' value='${auto.autoId}' />
 								</spring:url>
-								<td><a href="${herstelingeenUrl}"><i
+								<td><a href="${herstellingenUrl}"><i
 										class="fa fa-wrench" title="Herstellingen tonen"></i></a></td>
+								<spring:url var='wijzigUrl' value='/wijzigen/{id}'>
+									<spring:param name='id' value='${auto.autoId}' />
+								</spring:url>
+								<td><a href="${wijzigUrl}"><i
+										class="fa fa-exchange" title="Nieuwe eigenaar toekennen"></i></a></td>
 							</tr>
 						</c:forEach>
 						<tr>
@@ -76,7 +81,7 @@
 				<p>Geen Auto's gevonden.</p>
 				<table>
 					<tr>
-						<td><a href="<c:url value='/autos/toevoegen'/>">herstelling
+						<td><a href="<c:url value='/autos/toevoegen'/>">Auto
 								toevoegen</a></td>
 					</tr>
 				</table>

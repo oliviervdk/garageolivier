@@ -10,24 +10,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import be.vdab.garageolivier.entities.Auto;
 import be.vdab.garageolivier.entities.Klant;
 import be.vdab.garageolivier.repositories.AutosRepository;
-import be.vdab.garageolivier.repositories.HerstellingenRepository;
 import be.vdab.garageolivier.repositories.KlantenRepository;
 
 @Service
 @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 class KlantenServiceImpl implements KlantenService {
-	private final KlantenRepository klantenRepository;
-	private final AutosRepository autosRepository;
-	private final HerstellingenRepository herstellingenRepository;
+	
+	private final KlantenRepository klantenRepository;	
 
-	KlantenServiceImpl(KlantenRepository klantenRepository, AutosRepository autosRepository,
-			HerstellingenRepository herstellingenRepository) {
+	KlantenServiceImpl(KlantenRepository klantenRepository, AutosRepository autosRepository) {
 		this.klantenRepository = klantenRepository;
-		this.autosRepository = autosRepository;
-		this.herstellingenRepository = herstellingenRepository;
 	}
 
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
@@ -42,11 +36,6 @@ class KlantenServiceImpl implements KlantenService {
 
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
 	public void delete(Klant klant) {
-		List<Auto> klantAutos = autosRepository.findByKlant(klant);
-		for (Auto auto : klantAutos) {
-			herstellingenRepository.deleteByAuto(auto);
-			autosRepository.delete(auto);
-		}
 		klantenRepository.delete(klant);
 	}
 
